@@ -100,7 +100,7 @@ export const PublicResumePage = () => {
         <div className="flex items-center gap-x-4">
           <Button variant="outline" className="gap-x-2 rounded-full" onClick={onDownloadPdf}>
             {loading ? <CircleNotch size={16} className="animate-spin" /> : <FilePdf size={16} />}
-            {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
+            
             <span>{t`Download PDF`}</span>
           </Button>
 

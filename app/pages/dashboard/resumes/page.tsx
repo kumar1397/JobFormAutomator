@@ -3,7 +3,7 @@ import { List, SquaresFour } from "@phosphor-icons/react";
 import { ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "@reactive-resume/ui";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Helmet } from "react-helmet-async";
+
 
 import { GridView } from "./_layouts/grid";
 import { ListView } from "./_layouts/list";
@@ -15,11 +15,11 @@ export const ResumesPage = () => {
 
   return (
     <>
-      <Helmet>
+      <div>
         <title>
           {t`Resumes`} - {t`Reactive Resume`}
         </title>
-      </Helmet>
+      </div>
 
       <Tabs
         value={layout}
