@@ -1,0 +1,151 @@
+/* General Styles */
+.info-text {
+    margin-bottom: 30px;
+  }
+  
+  #theme2, #theme1 {
+    width: 210mm; /* A4 width */
+    margin: auto;
+    max-height: 297mm; /* A4 height */
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  #theme1::-webkit-scrollbar, #theme2::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  #theme1::-webkit-scrollbar-thumb, #theme2::-webkit-scrollbar-thumb {
+    background-color: #D2E4E1;
+    border-radius: 4px;
+  }
+  
+  #theme1::-webkit-scrollbar-track, #theme2::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+  
+  /* Skills Set */
+  .skill-badge {
+    background-color: #D2E4E1 !important;
+    color: black !important;
+    margin: 5px;
+  }
+  
+  .skillBox, .hobbieBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .basic-set {
+    margin: 0rem 5rem;
+    padding-top: 10px;
+  }
+  
+  /* Utility */
+  .subBox {
+    margin-bottom: 15px;
+  }
+  
+  .sub-details {
+    padding: 0px 10px;
+  }
+  
+  .sub-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .hobbie-badge {
+    background-color: #D2E4E1 !important;
+    color: black !important;
+    margin: 5px;
+  }
+  
+  /* Page Break Indicator */
+  .page-break-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    border-top: 1px dashed #ccc;
+    text-align: center;
+    font-size: 12px;
+    color: gray;
+    margin-top: 10px;
+  }
+  
+  .page-break-indicator span {
+    background: #fff;
+    padding: 0 5px;
+  }
+  
+  /* Media Queries for On-Screen Display */
+  @media only screen and (max-width: 715px) {
+    #theme2, #theme1 {
+      padding: 47px 19px;
+    }
+    
+    #resume-avatar {
+      width: auto;
+      height: 105px;
+    }
+  
+    .info-text {
+      width: 290px;
+    }
+  
+    .summary-text {
+      width: 100% !important;
+    }
+  }
+  
+  @media only screen and (max-width: 430px) {
+    #theme2, #theme1 {
+      padding: 14px 10px;
+    }
+    
+    .basic-set {
+      margin: 0rem 1rem;
+    }
+  }
+  
+  /* Print Styles */
+  @media print {
+    #theme2, #theme1 {
+      width: 100%; /* Full width for print */
+      height: auto; /* Expand to fit content */
+      max-height: none; /* Disable max-height for print */
+      overflow: visible; /* Ensure all content is visible */
+      border: none; /* Remove border for cleaner print */
+      box-shadow: none; /* Remove shadow for print */
+      page-break-inside: avoid; /* Avoid breaking sections awkwardly */
+    }
+  
+    .basic-set {
+      margin: 0; /* Adjust margins for print */
+    }
+  
+    .subBox {
+      page-break-inside: avoid; /* Prevent breaking sub-boxes */
+    }
+  
+    .page-break {
+      page-break-before: always; /* Force new page */
+    }
+  
+    #theme1::-webkit-scrollbar, #theme2::-webkit-scrollbar {
+      display: none; /* Hide scrollbar */
+    }
+  
+    body {
+      font-size: 12px; /* Adjust font size for print */
+    }
+  }
+  

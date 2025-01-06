@@ -1,0 +1,108 @@
+#thheme1 {
+  width: 210mm;
+  margin: auto;
+  max-height: 297mm; /* A4 height */
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid #ccc;
+  padding: 60px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+#theme1::-webkit-scrollbar {
+  width: 8px;
+}
+
+#theme1::-webkit-scrollbar-thumb {
+  background-color: #D2E4E1;
+  border-radius: 4px;
+}
+
+#theme1::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+/* Skills Set */
+.skill-badge {
+  background-color: #D2E4E1 !important;
+  color: black !important;
+  margin: 5px;
+}
+
+.skillBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.basic-set {
+  margin: 0rem 5rem;
+  padding-top: 10px;
+}
+
+/* Utility */
+.subBox {
+  margin-bottom: 15px;
+}
+
+.sub-details {
+  padding: 0px 10px;
+}
+
+.sub-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.hobbie-badge {
+  background-color: #D2E4E1 !important;
+  color: black !important;
+  margin: 5px;
+}
+
+.hobbieBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.language-badge {
+  background-color: #D2E4E1 !important;
+  color: black !important;
+  margin: 5px;
+}
+
+.languageBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Page Break Indicator */
+.page-break-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  border-top: 1px dashed #ccc;
+  text-align: center;
+  font-size: 12px;
+  color: gray;
+  margin-top: 10px;
+}
+
+.page-break-indicator span {
+  background: #fff;
+  padding: 0 5px;
+}
+
+/* Media Queries */
+@media only screen and (max-width: 450px) {
+  .basic-set {
+    margin: 0rem 1rem;
+  }
+}

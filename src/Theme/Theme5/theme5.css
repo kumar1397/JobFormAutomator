@@ -1,0 +1,181 @@
+/* Base Styling */
+.theme2-container {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    overflow: hidden;
+  }
+  
+  /* Header Section */
+  .header-section {
+    text-align: center;
+    background-color: #e6f7f5;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .header-section h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: #2c7a7b;
+  }
+  
+  .profile-text {
+    font-size: 1.2rem;
+    color: #4a5568;
+    margin-top: 10px;
+  }
+  
+  .info-item {
+    font-size: 1rem;
+    color: #4a5568;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .info-item svg {
+    font-size: 1.2rem;
+    color: #2c7a7b;
+  }
+  
+  /* Section Styling */
+  .section {
+    margin-top: 20px;
+  }
+  
+  .section-heading {
+    background-color: #38b2ac;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .skills-section .skill-badge {
+    background-color: #2c7a7b;
+    color: white;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    margin-right: 8px;
+    margin-bottom: 10px;
+  }
+  
+  /* List Styling */
+  ul {
+    margin: 10px 0 0 20px;
+    padding: 0;
+    list-style-type: disc;
+  }
+  
+  li {
+    font-size: 0.95rem;
+    color: #4a5568;
+    margin: 5px 0;
+  }
+  
+  /* Divider */
+  hr,
+  .divider {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 20px 0;
+  }
+  
+  /* Print Styling */
+  @media print {
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 12pt;
+    }
+  
+    .theme2-container {
+        box-shadow: none !important;
+        border: none !important;
+        background-color: white !important;
+        margin: 0;
+        padding: 10px;
+        width: 100%;
+    }
+  
+    /* Ensure all sections are visible */
+    .theme2-container * {
+        visibility: visible;
+    }
+  
+    .header-section {
+        background-color: white;
+        color: #000;
+        padding: 15px;
+    }
+  
+    .section-heading {
+        background-color: #000;
+        color: white;
+        font-size: 1rem;
+    }
+  
+    ul {
+        margin-left: 15px;
+    }
+  
+    li {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+  
+    .skills-section .skill-badge {
+        background-color: #000;
+        color: white;
+        font-size: 0.85rem;
+        margin: 5px 5px;
+    }
+  
+    /* Remove unnecessary print content */
+    button,
+    .no-print {
+        display: none;
+    }
+  
+    /* Avoid breaking inside sections */
+    .section {
+        page-break-inside: avoid;
+    }
+  }
+  
+  /* Responsive Design */
+  @media screen and (max-width: 768px) {
+    .theme2-container {
+        padding: 15px;
+    }
+  
+    .header-section h1 {
+        font-size: 2rem;
+    }
+  
+    .info-item {
+        font-size: 0.9rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+  
+    .section-heading {
+        font-size: 1rem;
+    }
+  
+    ul {
+        margin-left: 10px;
+    }
+  }
+  
