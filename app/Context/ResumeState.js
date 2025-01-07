@@ -1,3 +1,4 @@
+"use client"
 import ResumeContext from "./ResumeContext";
 import { useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";

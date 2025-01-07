@@ -1,9 +1,9 @@
 import React from "react";
-import {BuilderPage} from '../app/client/src/pages/builder/page'
+import Resume from "./Resume/page";
 export default function Home() {
   return (
     <>
-    <BuilderPage/>
+      <Resume />
     </>
   );
 }
