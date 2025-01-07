@@ -13,30 +13,29 @@ import {
   WorkData,
   AwardData,
   CertificateData,
-  Skills,
 } from "./types";
 
 export default function DataStyleSelection() {
-  //   const {
-  //     themeData,
-  //     checkAward,
-  //     setCheckAward,
-  //     setThemeData,
-  //     checkProj,
-  //     checkWork,
-  //     setCheckProj,
-  //     setCheckWork,
-  //     checkHobbie,
-  //     setCheckHobbie,
-  //     checkLanguages,
-  //     setCheckLanguages,
-  //     checkCertificate,
-  //     setCheckCertificate,
-  //     checkLinkedin,
-  //     setCheckLinkedin,
-  //     checkGithub,
-  //     setcheckGithub,
-  //   } = useContext(ResumeContext);
+    // const {
+    //   themeData,
+    //   checkAward,
+    //   setCheckAward,
+    //   setThemeData,
+    //   checkProj,
+    //   checkWork,
+    //   setCheckProj,
+    //   setCheckWork,
+    //   checkHobbie,
+    //   setCheckHobbie,
+    //   checkLanguages,
+    //   setCheckLanguages,
+    //   checkCertificate,
+    //   setCheckCertificate,
+    //   checkLinkedin,
+    //   setCheckLinkedin,
+    //   checkGithub,
+    //   setcheckGithub,
+    // } = useContext(ResumeContext);
 
   const [projectCount, setProjectCount] = useState<number>(0);
   const [educationCount, setEducationCount] = useState<number>(0);
@@ -101,16 +100,6 @@ export default function DataStyleSelection() {
     awards: "Your Awards are shown here",
   });
 
-  const [skills, setSkills] = useState<Skills>({
-    languages: "",
-    technologies: "",
-    fundamentals: "",
-    softSkills: "",
-  });
-
-  const [skillCount, setSkillCount] = useState<number>(0);
-  const [skillArrTemplate, setSkillArrTemplate] = useState<JSX.Element[]>([]);
-
   // To Add Personal Data to the State
   const handleChangePersonal = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -119,7 +108,7 @@ export default function DataStyleSelection() {
 
     if (
       name === "profileImage" &&
-      e.target instanceof HTMLinputElement &&
+      e.target instanceof HTMLInputElement &&
       e.target.files &&
       e.target.files[0]
     ) {
@@ -163,7 +152,6 @@ export default function DataStyleSelection() {
       <div key={i}>
         <div  className="my-2">
           <input
-            disabled={checkProj}
             id={`pTitle${i}`}
             name="pName"
             onChange={handleChangeProject}
@@ -173,7 +161,6 @@ export default function DataStyleSelection() {
         </div>
         <div  className="my-2">
           <textarea
-            disabled={checkProj}
             id={`pDescription${i}`}
             name="pDescription"
             onChange={handleChangeProject}
@@ -316,57 +303,11 @@ export default function DataStyleSelection() {
   };
 
   // To Add Skill Data to the State
-  const handleChangeSkill = (e: ChangeEvent<HTMLTextAreaElement>) => {
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const newSkills: Skills = { ...skills, [name]: value };
-
-    setSkills(newSkills);
-  };
-
-  const handleSkillClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const i = skillCount + 1;
-
-    const template = (
-      <div key={i}>
-        <div  className="my-2">
-          <textarea
-            id={`languages${i}`}
-            name="languages"
-            onChange={handleChangeSkill}
-            placeholder="Enter Languages (e.g., Java, Python)"
-          />
-        </div>
-        <div  className="my-2">
-          <textarea
-            id={`technologies${i}`}
-            name="technologies"
-            onChange={handleChangeSkill}
-            placeholder="Enter Technologies (e.g., React, MongoDB)"
-          />
-        </div>
-        <div  className="my-2">
-          <textarea
-            id={`fundamentals${i}`}
-            name="fundamentals"
-            onChange={handleChangeSkill}
-            placeholder="Enter Fundamentals (e.g., OOPS, DBMS)"
-          />
-        </div>
-        <div  className="my-2">
-          <textarea
-            id={`softSkills${i}`}
-            name="softSkills"
-            onChange={handleChangeSkill}
-            placeholder="Enter Soft Skills (e.g., Communication, Teamwork)"
-          />
-        </div>
-      </div>
-    );
-
-    setSkillArrTemplate((prev) => [...prev, template]);
-    setSkillCount(i);
-  };
+    setPersonalData((prev) => ({ ...prev, [name]: value }));
+};
 
   // To Add Work Data to the State
   const handleChangeWork = (
@@ -381,11 +322,6 @@ export default function DataStyleSelection() {
       newWorkData.workDesc[id] = value;
     }
 
-    setWorkData(newWorkData);
-    setThemeData((prevTheme) => ({
-      ...prevTheme,
-      workData: newWorkData,
-    }));
   };
 
   const handleWorkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -517,11 +453,6 @@ export default function DataStyleSelection() {
         </div>
         <div>
           <h4>Github</h4>
-          <Switch
-            isChecked={checkGithub}
-            onChange={() => setcheckGithub(!checkGithub)}
-            colorScheme="teal"
-          />
           <div className="my-2">
             <input
               name="github"
@@ -529,7 +460,6 @@ export default function DataStyleSelection() {
               type="text"
               placeholder="Github"
               value={personalData.github}
-              disabled={!checkGithub}
             />
           </div>
         </div>
@@ -542,7 +472,7 @@ export default function DataStyleSelection() {
         <div className="my-2">
           <input
             name="skill"
-            onChange={handleChangePersonal}
+            onChange={handleInputChange}
             type="text"
             placeholder="Separate skills by comma"
             value={personalData.skill}
