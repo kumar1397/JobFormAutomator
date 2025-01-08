@@ -15,7 +15,7 @@ import {
   CertificateData,
 } from "./types";
 
-export default function DataStyleSelection() {
+export default function LeftSidebar() {
     // const {
     //   themeData,
     //   checkAward,
@@ -66,7 +66,7 @@ export default function DataStyleSelection() {
     duration: { startTime: "January 2024" },
   });
 
-  const [workData, setWorkData] = useState<WorkData>({
+  const [workData] = useState<WorkData>({
     workTitles: { wTitle1: "Work Title" },
     workDesc: {
       wDescription1: "Work Description are Shown here, with Bullet Points",
