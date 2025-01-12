@@ -1,12 +1,7 @@
 import { React, useContext } from "react";
-// import Introduction from "../../Components/Intro/Introduction";
-// import ResumeContext from "../../Context/ResumeContext";
-// import BuilderArea from "../BuilderArea";
+
 import Theme1 from "./../../Theme/Theme1/Theme1";
-// import Theme2 from "../../Theme/Theme2/Theme2";
-// import Theme3 from "../../Theme/Theme3/Theme3";
-// import Theme4 from "../../Theme/Theme4/theme4";
-// import Theme5 from "../../Theme/Theme5/Theme5";
+
 
 const Home = () => {
   // const { currentTheme, showComponent, themeData, componentRef } =
