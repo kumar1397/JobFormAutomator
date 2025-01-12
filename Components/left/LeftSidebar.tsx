@@ -1,176 +1,35 @@
 // src/components/DataStyleSelection/DataStyleSelection.tsx
 
 "use client";
-
-import React, { useState, ChangeEvent, JSX } from "react";
-import Image from 'next/image';
-import { IoMdCloudUpload } from "react-icons/io";
-
-import {
-  PersonalData,
-  ProjectData,
-  EducationData,
-  WorkData,
-  AwardData,
-  CertificateData,
-} from "./types";
+import React, { ChangeEvent,useState } from "react";
+import { usePersonalDataStore, useProjectStore, useEducationStore } from "@/app/store";
 
 export default function LeftSidebar() {
-    // const {
-    //   themeData,
-    //   checkAward,
-    //   setCheckAward,
-    //   setThemeData,
-    //   checkProj,
-    //   checkWork,
-    //   setCheckProj,
-    //   setCheckWork,
-    //   checkHobbie,
-    //   setCheckHobbie,
-    //   checkLanguages,
-    //   setCheckLanguages,
-    //   checkCertificate,
-    //   setCheckCertificate,
-    //   checkLinkedin,
-    //   setCheckLinkedin,
-    //   checkGithub,
-    //   setcheckGithub,
-    // } = useContext(ResumeContext);
-
-  const [projectCount, setProjectCount] = useState<number>(0);
-  const [educationCount, setEducationCount] = useState<number>(0);
-  const [certificateCount, setCertificateCount] = useState<number>(0);
-  const [workCount, setWorkCount] = useState<number>(0);
-
-  const [projArrTemplate, setProjArrTemplate] = useState<JSX.Element[]>([]);
-  const [educationArrTemplate, setEducationArrTemplate] = useState<
-    JSX.Element[]
-  >([]);
-  const [CertificatesArrTemplate, setCertificatesArrTemplate] = useState<
-    JSX.Element[]
-  >([]);
-  const [workArrTemplate, setWorkArrTemplate] = useState<JSX.Element[]>([]);
-
-  const [projectData, setProjectData] = useState<ProjectData>({
-    projectTitles: { pTitle1: "Project Title " },
-    projectDesc: {
-      pDescription1: "Project Description are Shown here, with Bullet Points",
-    },
-  });
-
-  const [educationData, setEducationData] = useState<EducationData>({
-    educationTitles: { eTitle1: "Education Title" },
-    educationDesc: {
-      eDescription1: "Education Description are Shown here, with Bullet Points",
-    },
-    duration: { startTime: "January 2024" },
-  });
-
-  const [workData] = useState<WorkData>({
-    workTitles: { wTitle1: "Work Title" },
-    workDesc: {
-      wDescription1: "Work Description are Shown here, with Bullet Points",
-    },
-  });
-
-  const [certificateData, setCertificateData] = useState<CertificateData>({
-    certificateTitles: { cTitle1: "Certificate Title" },
-    certificateDesc: {
-      cDescription1:
-        "certification Description are Shown here, with Bullet Points",
-    },
-  });
-
-  const [personalData, setPersonalData] = useState<PersonalData>({
-    profileImage: "https://www.w3schools.com/howto/img_avatar.png",
-    name: "Your Name",
-    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing eli",
-    profile: "Work Profile",
-    address: "Address Line",
-    phone: "Phone Number",
-    email: "Email Address",
-    skill: "Your, Skills, are, shown, here",
-    hobbie: "Your, hobbies, are, shown, here",
-    language: "your, languages, are, shown, here",
-    linkedin: "Linkedin",
-    github: "Github",
-  });
-
-  const [awardData, setAwardData] = useState<AwardData>({
-    awards: "Your Awards are shown here",
-  });
+  const { personalData, updatePersonalData,} = usePersonalDataStore();
+  const {  addProject, updateProject, deleteProject } = useProjectStore();
+  const [projectName, setProjectName] = useState("");
+  const [projectDetails, setProjectDetails] = useState("");
+  const [editId, setEditId] = useState<string | null>(null);
 
   // To Add Personal Data to the State
   const handleChangePersonal = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-
-    if (name === "profileImage") {
-      const fileInput = e.target as HTMLInputElement;
-      if (fileInput.files && fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        if (file) {
-          setPersonalData((prevData) => ({
-            ...prevData,
-            profileImage: URL.createObjectURL(file),
-          }));
-        }
-      }
-    } else {
-      setPersonalData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
+    updatePersonalData(name, value); // Update other fields in the store
   };
 
   // To Add Project Data to the State
-  const handleChangeProject = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, id } = e.target;
-    const newProjectData: ProjectData = { ...projectData };
-
-    if (name.includes("pName")) {
-      newProjectData.projectTitles[id] = value;
+  const handleChangeProject = () => {
+    if (editId) {
+        updateProject(editId, projectName, projectDetails);
+        setEditId(null);
     } else {
-      newProjectData.projectDesc[id] = value;
+        addProject(projectName, projectDetails);
     }
-
-    setProjectData(newProjectData);
-    
-  };
-
-  const handleProjectClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const i = projectCount + 1;
-
-    const template = (
-      <div key={i}>
-        <div  className="my-2">
-          <input
-            id={`pTitle${i}`}
-            name="pName"
-            onChange={handleChangeProject}
-            type="text"
-            placeholder="Enter Project Title"
-          />
-        </div>
-        <div  className="my-2">
-          <textarea
-            id={`pDescription${i}`}
-            name="pDescription"
-            onChange={handleChangeProject}
-            placeholder="Use comma to separate Description"
-          />
-        </div>
-      </div>
-    );
-
-    setProjArrTemplate((prev) => [...prev, template]);
-    setProjectCount(i);
-  };
+    setProjectName('');
+    setProjectDetails('');
+};
 
   // To Add Education Data to the State
   const handleChangeEducation = (
@@ -203,7 +62,7 @@ export default function LeftSidebar() {
 
     const template = (
       <div key={i}>
-        <div  className="my-2">
+        <div className="my-2">
           <input
             id={`eTitle${i}`}
             name="eName"
@@ -212,7 +71,7 @@ export default function LeftSidebar() {
             placeholder="Enter Title"
           />
         </div>
-        <div  className="my-2">
+        <div className="my-2">
           <textarea
             id={`eDescription${i}`}
             name="eDescription"
@@ -220,7 +79,7 @@ export default function LeftSidebar() {
             placeholder="Use comma to separate Description"
           />
         </div>
-        <div  className="my-2">
+        <div className="my-2">
           <input
             id={`startDate${i}`}
             name="startDate"
@@ -229,7 +88,7 @@ export default function LeftSidebar() {
             placeholder="Start Date"
           />
         </div>
-        <div  className="my-2">
+        <div className="my-2">
           <input
             id={`endDate${i}`}
             name="endDate"
@@ -238,7 +97,7 @@ export default function LeftSidebar() {
             placeholder="End Date"
           />
         </div>
-        <div  className="my-2">
+        <div className="my-2">
           <input
             id={`cgpa${i}`}
             name="cgpa"
@@ -276,7 +135,7 @@ export default function LeftSidebar() {
 
     const template = (
       <div key={i}>
-        <div  className="my-2">
+        <div className="my-2">
           <input
             id={`cTitle${i}`}
             name="cName"
@@ -285,7 +144,7 @@ export default function LeftSidebar() {
             placeholder="Enter Certificate Title"
           />
         </div>
-        <div  className="my-2">
+        <div className="my-2">
           <textarea
             id={`cDescription${i}`}
             name="cDescription"
@@ -300,13 +159,6 @@ export default function LeftSidebar() {
     setCertificateCount(i);
   };
 
-  // To Add Skill Data to the State
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setPersonalData((prev) => ({ ...prev, [name]: value }));
-};
-
   // To Add Work Data to the State
   const handleChangeWork = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -319,7 +171,6 @@ export default function LeftSidebar() {
     } else {
       newWorkData.workDesc[id] = value;
     }
-
   };
 
   const handleWorkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -328,7 +179,7 @@ export default function LeftSidebar() {
 
     const template = (
       <div key={i}>
-        <div  className="my-2">
+        <div className="my-2">
           <input
             id={`wTitle${i}`}
             name="wName"
@@ -337,7 +188,7 @@ export default function LeftSidebar() {
             placeholder="Enter Job Title"
           />
         </div>
-        <div  className="my-2">
+        <div className="my-2">
           <textarea
             id={`wDescription${i}`}
             name="wDescription"
@@ -362,22 +213,7 @@ export default function LeftSidebar() {
     <div className="w-1/5 mx-2">
       {/* Personal Details Area */}
       <div id="form-personal" className="mb-2">
-        <div  className="my-2">
-          <div className="file">
-            <label htmlFor="input-file">
-              <IoMdCloudUpload size={30} />
-              Select a file
-            </label>
-            <input
-              accept="image/*"
-              name="profileImage"
-              onChange={handleChangePersonal}
-              id="input-file"
-              type="file"/>
-             <Image height={10} width={10} src={personalData.profileImage} alt="your profile preview"/>
-          </div>
-        </div>
-        <div  className="my-2">
+        <div className="my-2">
           <input
             name="name"
             onChange={handleChangePersonal}
@@ -386,7 +222,7 @@ export default function LeftSidebar() {
             value={personalData.name}
           />
         </div>
-        <div  className="my-2">
+        <div className="my-2">
           <input
             name="summary"
             onChange={handleChangePersonal}
@@ -395,7 +231,7 @@ export default function LeftSidebar() {
             value={personalData.summary}
           />
         </div>
-        <div  className="my-2">
+        <div className="my-2">
           <input
             name="profile"
             onChange={handleChangePersonal}
@@ -404,7 +240,7 @@ export default function LeftSidebar() {
             value={personalData.profile}
           />
         </div>
-        <div  className="my-2">
+        <div className="my-2">
           <input
             name="address"
             onChange={handleChangePersonal}
@@ -413,7 +249,7 @@ export default function LeftSidebar() {
             value={personalData.address}
           />
         </div>
-        <div  className="my-2">
+        <div className="my-2">
           <input
             name="phone"
             onChange={handleChangePersonal}
@@ -422,7 +258,7 @@ export default function LeftSidebar() {
             value={personalData.phone}
           />
         </div>
-        <div  className="my-2">
+        <div className="my-2">
           <input
             name="email"
             onChange={handleChangePersonal}
