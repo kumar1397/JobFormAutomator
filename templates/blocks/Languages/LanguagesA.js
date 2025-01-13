@@ -1,6 +1,6 @@
 import React, { memo, useContext } from 'react';
 import { isItemVisible, safetyCheck } from '../../../utils';
-import PageContext from '../../../contexts/PageContext';
+import PageContext from '../../util/PageContext';
 
 const LanguageItem = ({ id, name, fluency }) => (
   <div key={id} className="flex flex-col">

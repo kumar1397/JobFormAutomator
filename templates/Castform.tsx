@@ -7,13 +7,19 @@ import HeadingD from './blocks/Heading/HeadingD';
 import HobbiesA from './blocks/Hobbies/HobbiesA';
 import LanguagesA from './blocks/Languages/LanguagesA';
 import ObjectiveA from './blocks/Objective/ObjectiveA';
-import PageContext from '../contexts/PageContext';
+import PageContext from './util/PageContext';
 import ProjectsA from './blocks/Projects/ProjectsA';
 import ReferencesA from './blocks/References/ReferencesA';
 import SkillsA from './blocks/Skills/SkillsA';
 import WorkA from './blocks/Work/WorkA';
 
-const Blocks = {
+type Layout = (keyof typeof Blocks)[][]; // Layout type as an array of arrays of keys
+
+type BlocksType = {
+  [key: string]: React.ComponentType<any>; // Blocks object where the value is a React component
+};
+
+const Blocks: BlocksType = {
   objective: ObjectiveA,
   work: WorkA,
   education: EducationA,
@@ -26,7 +32,30 @@ const Blocks = {
   references: ReferencesA,
 };
 
-const Castform = ({ data }) => {
+interface CastformProps {
+  data: {
+    profile: {
+      photograph: string;
+      firstName: string;
+      lastName: string;
+      subtitle: string;
+      heading: string;
+    };
+    metadata: {
+      layout: {
+        castform: Layout;
+      };
+      colors: {
+        background: string;
+        text: string;
+        primary: string;
+      };
+      font: string;
+    };
+  };
+}
+
+const Castform: React.FC<CastformProps> = ({ data }) => {
   const layout = data.metadata.layout.castform;
 
   const Photo = () =>
@@ -73,25 +102,32 @@ const Castform = ({ data }) => {
             <div className="grid gap-4">
               <Photo />
               <Profile />
-
               <div>
                 <HeadingD>{data.profile.heading}</HeadingD>
                 <ContactC />
               </div>
 
               {layout[0] &&
-                layout[0].map((x) => {
+                layout[0].map((x, index) => {
                   const Component = Blocks[x];
-                  return Component && <Component key={x} />;
+                  if (!Component) {
+                    console.error(`No component found for key: "${x}" in layout[0].`);
+                    return null;
+                  }
+                  return <Component key={index} />;
                 })}
             </div>
           </div>
           <div className="col-span-8 py-8 pl-5 pr-8">
             <div className="grid gap-4">
               {layout[1] &&
-                layout[1].map((x) => {
+                layout[1].map((x, index) => {
                   const Component = Blocks[x];
-                  return Component && <Component key={x} />;
+                  if (!Component) {
+                    console.error(`No component found for key: "${x}" in layout[1].`);
+                    return null;
+                  }
+                  return <Component key={index} />;
                 })}
             </div>
           </div>

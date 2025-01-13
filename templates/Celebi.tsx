@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import React from 'react';
-import { hexToRgb } from '../utils';
+import { hexToRgb } from './util/index';
 import AwardsA from './blocks/Awards/AwardsA';
 import CertificationsA from './blocks/Certifications/CertificationsA';
 import ContactC from './blocks/Contact/ContactC';
@@ -9,13 +9,17 @@ import HeadingE from './blocks/Heading/HeadingE';
 import HobbiesA from './blocks/Hobbies/HobbiesA';
 import LanguagesB from './blocks/Languages/LanguagesB';
 import ObjectiveA from './blocks/Objective/ObjectiveA';
-import PageContext from '../contexts/PageContext';
+import PageContext from './util/PageContext';
 import ProjectsA from './blocks/Projects/ProjectsA';
 import ReferencesA from './blocks/References/ReferencesA';
 import SkillsA from './blocks/Skills/SkillsA';
 import WorkA from './blocks/Work/WorkA';
 
-const Blocks = {
+type BlocksType = {
+  [key: string]: React.ComponentType<any>; // Blocks type with React components
+};
+
+const Blocks: BlocksType = {
   objective: ObjectiveA,
   work: WorkA,
   education: EducationA,
@@ -28,12 +32,37 @@ const Blocks = {
   references: ReferencesA,
 };
 
-const Celebi = ({ data }) => {
+type Layout = (keyof typeof Blocks)[]; // Layout array type
+
+interface CelebiProps {
+  data: {
+    profile: {
+      photograph: string;
+      firstName: string;
+      lastName: string;
+      subtitle: string;
+      heading: string;
+    };
+    metadata: {
+      layout: {
+        celebi: [Layout, Layout];
+      };
+      colors: {
+        background: string;
+        text: string;
+        primary: string;
+      };
+      font: string;
+    };
+  };
+}
+
+const Celebi: React.FC<CelebiProps> = ({ data }) => {
   const layout = data.metadata.layout.celebi;
   const { r, g, b } = hexToRgb(data.metadata.colors.primary) || {};
   const { t } = useTranslation();
 
-  const styles = {
+  const styles: { header: React.CSSProperties; leftSection: React.CSSProperties; rightSection: React.CSSProperties } = {
     header: {
       position: 'absolute',
       left: 0,
@@ -105,11 +134,14 @@ const Celebi = ({ data }) => {
                 </div>
               </div>
 
-              {layout[0] &&
-                layout[0].map((x) => {
-                  const Component = Blocks[x];
-                  return Component && <Component key={x} />;
-                })}
+              {layout[0]?.map((x, index) => {
+                const Component = Blocks[x];
+                if (!Component) {
+                  console.error(`No component found for key: "${x}" in layout[0].`);
+                  return null; // Skip rendering missing components
+                }
+                return <Component key={index} />;
+              })}
             </div>
           </div>
           <div className="col-span-8">
@@ -117,11 +149,14 @@ const Celebi = ({ data }) => {
 
             <div className="relative" style={styles.rightSection}>
               <div className="grid gap-4 mt-4 mb-8 mr-8">
-                {layout[1] &&
-                  layout[1].map((x) => {
-                    const Component = Blocks[x];
-                    return Component && <Component key={x} />;
-                  })}
+                {layout[1]?.map((x, index) => {
+                  const Component = Blocks[x];
+                  if (!Component) {
+                    console.error(`No component found for key: "${x}" in layout[1].`);
+                    return null; // Skip rendering missing components
+                  }
+                  return <Component key={index} />;
+                })}
               </div>
             </div>
           </div>

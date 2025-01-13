@@ -1,7 +1,7 @@
 import React, { memo, useContext } from 'react';
 import Markdown from '../../../components/shared/Markdown';
 import { formatDate, isItemVisible, safetyCheck } from '../../../utils';
-import PageContext from '../../../contexts/PageContext';
+import PageContext from '../../util/PageContextt';
 
 const AwardItem = ({ item, language }) => (
   <div>

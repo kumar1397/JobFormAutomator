@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import React from 'react';
-import { hasAddress, hexToRgb } from '../utils';
+import { hasAddress, hexToRgb } from './util';
 import AwardsA from './blocks/Awards/AwardsA';
 import CertificationsA from './blocks/Certifications/CertificationsA';
 import ContactB from './blocks/Contact/ContactB';
@@ -9,13 +9,14 @@ import HeadingC from './blocks/Heading/HeadingC';
 import HobbiesA from './blocks/Hobbies/HobbiesA';
 import LanguagesA from './blocks/Languages/LanguagesA';
 import ObjectiveA from './blocks/Objective/ObjectiveA';
-import PageContext from '../contexts/PageContext';
+import PageContext from './util/PageContext';
 import ProjectsA from './blocks/Projects/ProjectsA';
 import ReferencesB from './blocks/References/ReferencesB';
 import SkillsA from './blocks/Skills/SkillsA';
 import WorkA from './blocks/Work/WorkA';
 
-const Blocks = {
+// Defining Blocks object with component types
+const Blocks: Record<string, React.ComponentType<any>> = {
   objective: ObjectiveA,
   work: WorkA,
   education: EducationA,
@@ -28,18 +29,63 @@ const Blocks = {
   references: ReferencesB,
 };
 
-const Gengar = ({ data }) => {
+interface GengarProps {
+  data: {
+    profile: {
+      photograph: string;
+      firstName: string;
+      lastName: string;
+      subtitle: string;
+      address: {
+        line1: string;
+        line2: string;
+        city: string;
+        pincode: string;
+      };
+    };
+    metadata: {
+      layout: {
+        gengar: [string[], string[], string[]]; // layout is an array of arrays of component keys
+      };
+      colors: {
+        background: string;
+        text: string;
+        primary: string;
+      };
+      font: string;
+    };
+  };
+}
+
+const Gengar: React.FC<GengarProps> = ({ data }) => {
   const { t } = useTranslation();
   const layout = data.metadata.layout.gengar;
   const { r, g, b } = hexToRgb(data.metadata.colors.primary) || {};
+
+  // Explicitly typing the styles object
+  const styles: { [key: string]: React.CSSProperties } = {
+    header: {
+      fontFamily: data.metadata.font,
+      color: data.metadata.colors.text,
+      backgroundColor: data.metadata.colors.background,
+    },
+    photo: {
+      borderColor: data.metadata.colors.background,
+    },
+    leftSection: {
+      backgroundColor: data.metadata.colors.primary,
+      color: data.metadata.colors.background,
+    },
+    rightSection: {
+      backgroundColor: `rgba(${r}, ${g}, ${b}, 0.1)`,
+    },
+  };
 
   const Photo = () =>
     data.profile.photograph !== '' && (
       <img
         className="w-24 h-24 rounded-full mr-4 object-cover border-4"
-        style={{
-          borderColor: data.metadata.colors.background,
-        }}
+        style={styles.photo}
         src={data.profile.photograph}
         alt={data.profile.firstName}
       />
@@ -47,12 +93,8 @@ const Gengar = ({ data }) => {
 
   const Profile = () => (
     <div>
-      <h1 className="text-2xl font-bold leading-tight">
-        {data.profile.firstName}
-      </h1>
-      <h1 className="text-2xl font-bold leading-tight">
-        {data.profile.lastName}
-      </h1>
+      <h1 className="text-2xl font-bold leading-tight">{data.profile.firstName}</h1>
+      <h1 className="text-2xl font-bold leading-tight">{data.profile.lastName}</h1>
       <div className="text-xs font-medium mt-2">{data.profile.subtitle}</div>
     </div>
   );
@@ -62,20 +104,10 @@ const Gengar = ({ data }) => {
       <div
         id="page"
         className="rounded"
-        style={{
-          fontFamily: data.metadata.font,
-          color: data.metadata.colors.text,
-          backgroundColor: data.metadata.colors.background,
-        }}
+        style={styles.header}
       >
         <div className="grid grid-cols-12">
-          <div
-            className="col-span-4 px-6 py-8"
-            style={{
-              backgroundColor: data.metadata.colors.primary,
-              color: data.metadata.colors.background,
-            }}
-          >
+          <div className="col-span-4 px-6 py-8" style={styles.leftSection}>
             <div className="flex items-center">
               <Photo />
               <Profile />
@@ -105,39 +137,30 @@ const Gengar = ({ data }) => {
             <ContactB />
           </div>
 
-          <div
-            className="col-span-8 px-6 py-8"
-            style={{ backgroundColor: `rgba(${r}, ${g}, ${b}, 0.1)` }}
-          >
+          <div className="col-span-8 px-6 py-8" style={styles.rightSection}>
             <div className="grid gap-6 items-center">
-              {layout[0] &&
-                layout[0].map((x) => {
-                  const Component = Blocks[x];
-                  return Component && <Component key={x} />;
-                })}
+              {layout[0]?.map((x, index) => {
+                const Component = Blocks[x];
+                return Component ? <Component key={index} /> : null;
+              })}
             </div>
           </div>
 
-          <div
-            className="col-span-4 px-6 py-8"
-            style={{ backgroundColor: `rgba(${r}, ${g}, ${b}, 0.1)` }}
-          >
+          <div className="col-span-4 px-6 py-8" style={styles.rightSection}>
             <div className="grid gap-6">
-              {layout[1] &&
-                layout[1].map((x) => {
-                  const Component = Blocks[x];
-                  return Component && <Component key={x} />;
-                })}
+              {layout[1]?.map((x, index) => {
+                const Component = Blocks[x];
+                return Component ? <Component key={index} /> : null;
+              })}
             </div>
           </div>
 
           <div className="col-span-8 px-6 py-8">
             <div className="grid gap-6">
-              {layout[2] &&
-                layout[2].map((x) => {
-                  const Component = Blocks[x];
-                  return Component && <Component key={x} />;
-                })}
+              {layout[2]?.map((x, index) => {
+                const Component = Blocks[x];
+                return Component ? <Component key={index} /> : null;
+              })}
             </div>
           </div>
         </div>

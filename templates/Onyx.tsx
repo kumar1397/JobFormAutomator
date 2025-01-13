@@ -1,6 +1,6 @@
-import { useTranslation } from 'react-i18next';
 import React, { memo } from 'react';
-import { hasAddress } from '../utils';
+import { useTranslation } from 'react-i18next';
+import { hasAddress } from './util';
 import AwardsA from './blocks/Awards/AwardsA';
 import CertificationsA from './blocks/Certifications/CertificationsA';
 import Contact from './blocks/Contact/ContactE';
@@ -9,13 +9,50 @@ import HeadingA from './blocks/Heading/HeadingA';
 import HobbiesA from './blocks/Hobbies/HobbiesA';
 import LanguagesA from './blocks/Languages/LanguagesA';
 import ObjectiveA from './blocks/Objective/ObjectiveA';
-import PageContext from '../contexts/PageContext';
+import PageContext from './util/PageContext';
 import ProjectsA from './blocks/Projects/ProjectsA';
 import ReferencesA from './blocks/References/ReferencesA';
 import SkillsA from './blocks/Skills/SkillsA';
 import WorkA from './blocks/Work/WorkA';
 
-const Blocks = {
+// Define the types for `data`
+interface Address {
+  line1: string;
+  line2: string;
+  city: string;
+  pincode: string;
+}
+
+interface Profile {
+  photograph: string;
+  firstName: string;
+  lastName: string;
+  subtitle: string;
+  address: Address | null;
+}
+
+interface Metadata {
+  font: string;
+  colors: {
+    primary: string;
+    text: string;
+    background: string;
+  };
+  layout: {
+    onyx: string[][];
+  };
+}
+
+interface Data {
+  profile: Profile;
+  metadata: Metadata;
+}
+
+interface OnyxProps {
+  data: Data;
+}
+
+const Blocks: Record<string, React.ComponentType<any>> = {
   objective: ObjectiveA,
   work: WorkA,
   education: EducationA,
@@ -28,7 +65,7 @@ const Blocks = {
   references: ReferencesA,
 };
 
-const Onyx = ({ data }) => {
+const Onyx: React.FC<OnyxProps> = ({ data }) => {
   const { t } = useTranslation();
   const layout = data.metadata.layout.onyx;
 
@@ -68,10 +105,10 @@ const Onyx = ({ data }) => {
                   <h6 className="font-bold text-xs uppercase tracking-wide mb-1">
                     {t('shared.forms.address')}
                   </h6>
-                  <span>{data.profile.address.line1}</span>
-                  <span>{data.profile.address.line2}</span>
+                  <span>{data.profile.address?.line1}</span>
+                  <span>{data.profile.address?.line2}</span>
                   <span>
-                    {data.profile.address.city} {data.profile.address.pincode}
+                    {data.profile.address?.city} {data.profile.address?.pincode}
                   </span>
                 </div>
               )}

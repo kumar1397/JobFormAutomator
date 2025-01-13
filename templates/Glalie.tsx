@@ -1,5 +1,5 @@
 import React from 'react';
-import { hexToRgb } from '../utils';
+import { hexToRgb } from './util';
 import AwardsA from './blocks/Awards/AwardsA';
 import CertificationsA from './blocks/Certifications/CertificationsA';
 import ContactD from './blocks/Contact/ContactD';
@@ -8,13 +8,39 @@ import HeadingB from './blocks/Heading/HeadingB';
 import HobbiesA from './blocks/Hobbies/HobbiesA';
 import LanguagesA from './blocks/Languages/LanguagesA';
 import ObjectiveA from './blocks/Objective/ObjectiveA';
-import PageContext from '../contexts/PageContext';
+import PageContext from './util/PageContext';
 import ProjectsA from './blocks/Projects/ProjectsA';
 import ReferencesA from './blocks/References/ReferencesA';
 import SkillsA from './blocks/Skills/SkillsA';
 import WorkA from './blocks/Work/WorkA';
 
-const Blocks = {
+interface Profile {
+  photograph: string;
+  firstName: string;
+  lastName: string;
+  subtitle: string;
+}
+
+interface Data {
+  profile: Profile;
+  metadata: {
+    layout: {
+      glalie: [string[], string[]]; // layout for each section
+    };
+    colors: {
+      primary: string;
+      text: string;
+      background: string;
+    };
+    font: string;
+  };
+}
+
+interface GlalieProps {
+  data: Data;
+}
+
+const Blocks: Record<string, React.ComponentType<any>> = {
   objective: ObjectiveA,
   work: WorkA,
   education: EducationA,
@@ -27,7 +53,7 @@ const Blocks = {
   references: ReferencesA,
 };
 
-const Glalie = ({ data }) => {
+const Glalie: React.FC<GlalieProps> = ({ data }) => {
   const layout = data.metadata.layout.glalie;
   const { r, g, b } = hexToRgb(data.metadata.colors.primary) || {};
 
@@ -73,9 +99,9 @@ const Glalie = ({ data }) => {
               <ContactD />
 
               {layout[0] &&
-                layout[0].map((x) => {
+                layout[0].map((x, index) => {
                   const Component = Blocks[x];
-                  return Component && <Component key={x} />;
+                  return Component ? <Component key={index} /> : null;
                 })}
             </div>
           </div>
@@ -83,9 +109,9 @@ const Glalie = ({ data }) => {
           <div className="col-span-8">
             <div className="grid gap-4 p-8">
               {layout[1] &&
-                layout[1].map((x) => {
+                layout[1].map((x, index) => {
                   const Component = Blocks[x];
-                  return Component && <Component key={x} />;
+                  return Component ? <Component key={index} /> : null;
                 })}
             </div>
           </div>

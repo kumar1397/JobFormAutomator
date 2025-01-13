@@ -1,5 +1,5 @@
 import React from 'react';
-import Markdown from '../components/shared/Markdown';
+import Markdown from './util/Markdown';
 import AwardsA from './blocks/Awards/AwardsA';
 import CertificationsA from './blocks/Certifications/CertificationsA';
 import ContactA from './blocks/Contact/ContactA';
@@ -7,13 +7,41 @@ import EducationA from './blocks/Education/EducationA';
 import HeadingB from './blocks/Heading/HeadingB';
 import HobbiesA from './blocks/Hobbies/HobbiesA';
 import LanguagesA from './blocks/Languages/LanguagesA';
-import PageContext from '../contexts/PageContext';
+import PageContext from './util/PageContext';
 import ProjectsA from './blocks/Projects/ProjectsA';
 import ReferencesA from './blocks/References/ReferencesA';
 import SkillsA from './blocks/Skills/SkillsA';
 import WorkA from './blocks/Work/WorkA';
 
-const Blocks = {
+// Define the structure of the data prop
+interface Profile {
+  firstName: string;
+  lastName: string;
+  subtitle: string;
+  photograph: string;
+  objective: {
+    body: string;
+  };
+}
+
+interface Metadata {
+  font: string;
+  colors: {
+    text: string;
+    background: string;
+    primary: string;
+  };
+  layout: {
+    pikachu: string[][];
+  };
+}
+
+interface Data {
+  profile: Profile;
+  metadata: Metadata;
+}
+
+const Blocks: { [key: string]: React.FC<any> } = {
   work: WorkA,
   education: EducationA,
   projects: ProjectsA,
@@ -25,7 +53,11 @@ const Blocks = {
   references: ReferencesA,
 };
 
-const Pikachu = ({ data }) => {
+interface PikachuProps {
+  data: Data;
+}
+
+const Pikachu: React.FC<PikachuProps> = ({ data }) => {
   const layout = data.metadata.layout.pikachu;
 
   return (
@@ -70,15 +102,14 @@ const Pikachu = ({ data }) => {
                   {data.profile.subtitle}
                 </div>
 
-                {data.objective.body && (
+                {data.profile.objective.body && (
                   <div>
                     <hr
                       className="my-3 opacity-25"
                       style={{ borderColor: data.metadata.colors.background }}
                     />
-
                     <Markdown className="text-sm">
-                      {data.objective.body}
+                      {data.profile.objective.body}
                     </Markdown>
                   </div>
                 )}
@@ -91,9 +122,9 @@ const Pikachu = ({ data }) => {
               <ContactA />
 
               {layout[0] &&
-                layout[0].map((x) => {
+                layout[0].map((x: string) => {
                   const Component = Blocks[x];
-                  return Component && <Component key={x} />;
+                  return Component ? <Component key={x} /> : null;
                 })}
             </div>
           </div>
@@ -101,9 +132,9 @@ const Pikachu = ({ data }) => {
           <div className="col-span-8">
             <div className="grid gap-4">
               {layout[1] &&
-                layout[1].map((x) => {
+                layout[1].map((x: string) => {
                   const Component = Blocks[x];
-                  return Component && <Component key={x} />;
+                  return Component ? <Component key={x} /> : null;
                 })}
             </div>
           </div>
