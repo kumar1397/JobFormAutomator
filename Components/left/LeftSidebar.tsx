@@ -2,7 +2,7 @@
 
 "use client";
 import React, { ChangeEvent,useState } from "react";
-import { usePersonalDataStore, useProjectStore, useEducationStore } from "@/app/store";
+import { usePersonalDataStore, useProjectStore, useEducationStore ,useCertificateStore } from "@/app/store";
 
 export default function LeftSidebar() {
   const { personalData, updatePersonalData,} = usePersonalDataStore();
@@ -32,176 +32,29 @@ export default function LeftSidebar() {
 };
 
   // To Add Education Data to the State
-  const handleChangeEducation = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, id } = e.target;
-    const newEducationData: EducationData = { ...educationData };
-
-    if (name.includes("eName")) {
-      newEducationData.educationTitles[id] = value;
-    } else if (name.includes("eDescription")) {
-      newEducationData.educationDesc[id] = value;
-    } else if (name.includes("startDate")) {
-      newEducationData.duration[`startDate${id}`] = value;
-    } else if (name.includes("endDate")) {
-      newEducationData.duration[`endDate${id}`] = value;
-    } else if (name.includes("cgpa") || name.includes("percentage")) {
-      if (!newEducationData.performance) {
-        newEducationData.performance = {};
-      }
-      newEducationData.performance[id] = value;
+  const handleChangeEducation = () => {
+    if (editId) {
+        updateEducation(editId, projectName, projectDetails);
+        setEditId(null);
+    } else {
+        addEducation(projectName, projectDetails);
     }
-
-    setEducationData(newEducationData);
-  };
-
-  const handleEducationClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const i = educationCount + 1;
-
-    const template = (
-      <div key={i}>
-        <div className="my-2">
-          <input
-            id={`eTitle${i}`}
-            name="eName"
-            onChange={handleChangeEducation}
-            type="text"
-            placeholder="Enter Title"
-          />
-        </div>
-        <div className="my-2">
-          <textarea
-            id={`eDescription${i}`}
-            name="eDescription"
-            onChange={handleChangeEducation}
-            placeholder="Use comma to separate Description"
-          />
-        </div>
-        <div className="my-2">
-          <input
-            id={`startDate${i}`}
-            name="startDate"
-            onChange={handleChangeEducation}
-            type="month"
-            placeholder="Start Date"
-          />
-        </div>
-        <div className="my-2">
-          <input
-            id={`endDate${i}`}
-            name="endDate"
-            onChange={handleChangeEducation}
-            type="month"
-            placeholder="End Date"
-          />
-        </div>
-        <div className="my-2">
-          <input
-            id={`cgpa${i}`}
-            name="cgpa"
-            onChange={handleChangeEducation}
-            type="text"
-            placeholder="Enter CGPA/Percentage"
-          />
-        </div>
-      </div>
-    );
-
-    setEducationArrTemplate((prev) => [...prev, template]);
-    setEducationCount(i);
-  };
+    setEducationName('');
+    setEducationDetails('');
+};
 
   // To Add Certificates Data to the State
-  const handleChangeCertificate = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, id } = e.target;
-    const newCertificateData: CertificateData = { ...certificateData };
-
-    if (name.includes("cName")) {
-      newCertificateData.certificateTitles[id] = value;
+  const handleChangeCertificate = () => {
+    if (editId) {
+        updateCertificate(editId, projectName, projectDetails);
+        setEditId(null);
     } else {
-      newCertificateData.certificateDesc[id] = value;
+        addCertificate(projectName, projectDetails);
     }
-
-    setCertificateData(newCertificateData);
-  };
-
-  const handleCertificatesClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const i = certificateCount + 1;
-
-    const template = (
-      <div key={i}>
-        <div className="my-2">
-          <input
-            id={`cTitle${i}`}
-            name="cName"
-            onChange={handleChangeCertificate}
-            type="text"
-            placeholder="Enter Certificate Title"
-          />
-        </div>
-        <div className="my-2">
-          <textarea
-            id={`cDescription${i}`}
-            name="cDescription"
-            onChange={handleChangeCertificate}
-            placeholder="Use comma to separate Description"
-          />
-        </div>
-      </div>
-    );
-
-    setCertificatesArrTemplate((prev) => [...prev, template]);
-    setCertificateCount(i);
-  };
-
+    setCertificateName('');
+    setCertificateDetails('');
+};
   // To Add Work Data to the State
-  const handleChangeWork = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, id } = e.target;
-    const newWorkData: WorkData = { ...workData };
-
-    if (name.includes("wName")) {
-      newWorkData.workTitles[id] = value;
-    } else {
-      newWorkData.workDesc[id] = value;
-    }
-  };
-
-  const handleWorkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const i = workCount + 1;
-
-    const template = (
-      <div key={i}>
-        <div className="my-2">
-          <input
-            id={`wTitle${i}`}
-            name="wName"
-            onChange={handleChangeWork}
-            type="text"
-            placeholder="Enter Job Title"
-          />
-        </div>
-        <div className="my-2">
-          <textarea
-            id={`wDescription${i}`}
-            name="wDescription"
-            onChange={handleChangeWork}
-            placeholder="Use comma to separate Description"
-          />
-        </div>
-      </div>
-    );
-
-    setWorkArrTemplate((prev) => [...prev, template]);
-    setWorkCount(i);
-  };
 
   // To Add Award & Achievement Data to the State
   const handleChangeAwards = (e: ChangeEvent<HTMLTextAreaElement>) => {
